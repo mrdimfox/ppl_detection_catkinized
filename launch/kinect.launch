@@ -1,0 +1,4 @@
+<launch> 
+   <include file="$(find openni_launch)/launch/openni.launch"/>
+   <node pkg="ppl_detection" name="kinect_detect" type="kinect_detect" />
+</launch>
