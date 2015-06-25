@@ -468,8 +468,8 @@ double svm_predictor(sensor_msgs::PointCloud cloud)
         }
         node[node_index_cont].index = -1;
         //end loop 
-        std::string model_string = "../svm_models/" + model_name + ".model";
-        //std::string model_string = "/home/dim/Dev/ppl_detection_catkin/src/ppl_detection/src/" + model_name + ".model";
+        //std::string model_string = "../svm_models/" + model_name + ".model";
+        std::string model_string = "/home/atr/Development/stuff_ws/src/ppl_detection/svm_models/" + model_name + ".model";
 
         char *name_model = (char*)model_string.c_str();
         model = svm_load_model(name_model);
