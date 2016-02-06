@@ -59,9 +59,18 @@ add_library(ppl_detection
     src/plyfile.c
 )
 
+add_dependencies(ppl_detection
+    ppl_detection_generate_messages_cpp
+)
+
 add_executable(kinect_detect 
     src/kinect_detect.cpp
 )
+
+add_dependencies(kinect_detect
+    ppl_detection_generate_messages_cpp
+)
+
 target_link_libraries(kinect_detect 
     ppl_detection
     ${catkin_LIBRARIES}
@@ -71,6 +80,11 @@ target_link_libraries(kinect_detect
 add_executable(train 
     src/train.cpp
 )
+
+add_dependencies(train
+    ppl_detection_generate_messages_cpp
+)
+
 target_link_libraries(train 
     ppl_detection
     ${catkin_LIBRARIES}
@@ -80,6 +94,11 @@ target_link_libraries(train
 add_executable(predict 
     src/predict.cpp
 )
+
+add_dependencies(predict
+    ppl_detection_generate_messages_cpp
+)
+
 target_link_libraries(predict 
     ppl_detection
     ${catkin_LIBRARIES}
