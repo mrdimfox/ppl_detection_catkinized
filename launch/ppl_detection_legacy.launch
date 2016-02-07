@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<launch deprecated="This is deprecated launch file, whish use old openni"> 
+<launch deprecated="This is deprecated launch file, which use old openni">
    <include file="$(find openni_launch)/launch/openni.launch"/>
    <node pkg="ppl_detection" name="kinect_detect" type="kinect_detect" />
 </launch>
