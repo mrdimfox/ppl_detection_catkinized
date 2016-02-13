@@ -40,7 +40,8 @@
 #include "geometry_msgs/PolygonStamped.h"
 #include "ppl_detection/Tracker.h"
 
-std::string model_name = "my_model"; //change model name if required
+std::string g_model_name = "my_model"; //change model name if required
+struct svm_model *g_model;
 
 #define no_of_attributes 144
 #define max_tracker_no 10
@@ -82,8 +83,6 @@ struct track {
   int stationary;
   int isnonhuman;
 }tracker[max_tracker_no];
-
-struct svm_model *model;
 
 bool first = true;
 int obj_no = 0;
@@ -390,13 +389,23 @@ public:
      start = false;
   }
 };
+
 int main(int argc,char** argv)
 {
-   ros::init(argc, argv, "kinect_detect");
-   ros::NodeHandle n;
-   KinectDetect lstopc(n);
-   ros::spin();
-   return 0;
+  ros::init(argc, argv, "kinect_detect");
+  ros::NodeHandle n;
+
+  // Load svm model
+  std::string model_string = ros::package::getPath("ppl_detection") + "/svm_models/" + g_model_name + ".model";
+  g_model = svm_load_model((char*)model_string.c_str());
+
+  KinectDetect lstopc(n);
+  ros::spin();
+  
+  svm_free_and_destroy_model(g_model);
+  ros::shutdown();
+  
+  return 0;
 }
 
 double svm_predictor(sensor_msgs::PointCloud cloud)
@@ -470,13 +479,10 @@ double svm_predictor(sensor_msgs::PointCloud cloud)
         node[node_index_cont].index = -1;
         //end loop 
         
-        std::string model_string = ros::package::getPath("ppl_detection") + "/svm_models/" + model_name + ".model";
-
-        char *name_model = (char*)model_string.c_str();
-        model = svm_load_model(name_model);
         //start prediction of the image
         double dec[10];
-        double result = svm_predict_values(model, node, dec);
+        double result = svm_predict_values(g_model, node, dec);
+
         return result;
 }
 
