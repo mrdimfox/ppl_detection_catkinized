@@ -402,7 +402,7 @@ int main(int argc,char** argv)
   KinectDetect lstopc(n);
   ros::spin();
   
-  svm_free_and_destroy_model(g_model);
+  svm_free_and_destroy_model(&g_model);
   ros::shutdown();
   
   return 0;
